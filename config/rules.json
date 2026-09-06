@@ -1,0 +1,9 @@
+{
+  "maxPerDay": 9,
+  "hardMaxPerDay": 20,
+  "maxPerBoardPerDay": 3,
+  "maxDirectRatio": 0.25,
+  "lateMinutes": 90,
+  "minDistinctLinksPerDay": 8,
+  "forbiddenBoards": ["Archive – Previous Pins", "Archive - Previous Pins"]
+}
