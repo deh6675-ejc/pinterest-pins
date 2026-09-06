@@ -5,5 +5,15 @@
     "board": "Small Kitchen Organization",
     "kind": "guide",
     "note": "First live pipeline test; posted immediately instead of the 22:00 slot."
+  },
+  "2026-09-06-02": {
+    "failed": true,
+    "status": 500,
+    "body": {
+      "raw": "Scenario failed to complete."
+    },
+    "at": "2026-09-06T23:41:49.639Z",
+    "board": "Bathroom Storage Ideas",
+    "kind": "guide"
   }
 }
