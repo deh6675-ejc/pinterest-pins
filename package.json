@@ -1,0 +1,15 @@
+{
+  "name": "pinterest-pins",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pin plans, hero photos, composed pin images and posting state for the Smart Living & Creative Hobbies Pinterest account. No secrets live here.",
+  "scripts": {
+    "render": "node scripts/render.js",
+    "dispatch": "node scripts/dispatch.js",
+    "check": "node scripts/check.js"
+  },
+  "dependencies": {
+    "canvas": "^3.1.0",
+    "sharp": "^0.34.0"
+  }
+}
