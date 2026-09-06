@@ -1,15 +1,15 @@
 {
-  "_comment": "Board name -> Pinterest board ID. Filled from the Make 'Create a Pin' board dropdown. The Archive board is intentionally absent.",
-  "Small Apartment Organization": "",
-  "Renter-Friendly Storage Ideas": "",
-  "Small Kitchen Organization": "",
-  "Bathroom Storage Ideas": "",
-  "Small Bedroom & Closet Organization": "",
-  "Home Office Organization": "",
-  "Cricut & Vinyl Projects": "",
-  "Resin Art & DIY Crafts": "",
-  "Acrylic Painting & Miniatures": "",
-  "Beauty & Personal Care Refills": "",
-  "Health & Household Essentials": "",
-  "Grocery & Daily Nutrition": ""
+  "_comment": "Board name -> Pinterest board ID. The Archive board is intentionally absent so dispatch.js can never post to it.",
+  "Small Apartment Organization": "904942187565690128",
+  "Renter-Friendly Storage Ideas": "904942187565690129",
+  "Small Kitchen Organization": "904942187565690130",
+  "Bathroom Storage Ideas": "904942187565690131",
+  "Small Bedroom & Closet Organization": "904942187565690133",
+  "Home Office Organization": "904942187565690134",
+  "Cricut & Vinyl Projects": "904942187565690228",
+  "Resin Art & DIY Crafts": "904942187565690229",
+  "Acrylic Painting & Miniatures": "904942187565690230",
+  "Beauty & Personal Care Refills": "904942187565690428",
+  "Health & Household Essentials": "904942187565690430",
+  "Grocery & Daily Nutrition": "904942187565690431"
 }
