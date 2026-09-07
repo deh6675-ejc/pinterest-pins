@@ -3,6 +3,18 @@
 const fs = require('fs');
 const rules = JSON.parse(fs.readFileSync('config/rules.json', 'utf8'));
 const boards = JSON.parse(fs.readFileSync('config/boards.json', 'utf8'));
+// Where a guide pin is allowed to point. Nothing else in the pipeline checks this:
+// dispatch.js never fetches the link and Pinterest posts a pin whose link 404s
+// without complaint, so a wrong domain is a silent, cycle-wide failure that only
+// shows up in a review weeks later. A guide link must be exactly <origin><slug>.
+const GUIDE_ORIGIN = {
+  budget: 'https://budget-small-space-living.daniel-han-5569.chatgpt.site/guides/',
+  craft: 'https://the-craft-refill.daniel-han-5569.chatgpt.site/guides/',
+  routine: 'https://smart-routine-refills.daniel-han-5569.chatgpt.site/guides/',
+};
+// Direct pins carry their own Associates tag so their revenue stays separable
+// from the guide-mediated sites. A site tag here would misattribute the sale.
+const DIRECT_LINK = /^https:\/\/www\.amazon\.com\/dp\/[A-Z0-9]{10}\?tag=smartpinsdirect-20$/;
 const file = process.argv[2];
 if (!file) { console.error('usage: node scripts/check.js pins/YYYY-MM-DD.json'); process.exit(1); }
 const plan = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -25,6 +37,15 @@ for (const p of pins) {
   const img = `${p.site}/${p.hero || p.slug}|${p.head}|${p.cropX ?? 0.5}`;
   if (images.has(img)) errs.push(`${p.key}: same photo+headline+crop as another pin`); images.add(img);
   if (/bit\.ly|tinyurl|amzn\.to/.test(p.link)) errs.push(`${p.key}: shortened links are not allowed`);
+  if (p.kind === 'guide') {
+    const origin = GUIDE_ORIGIN[p.site];
+    if (!origin) errs.push(`${p.key}: unknown site "${p.site}" (expected budget, craft or routine)`);
+    else if (p.link !== origin + p.slug) errs.push(`${p.key}: guide link must be ${origin}${p.slug}\n      got ${p.link}`);
+  } else if (p.kind === 'direct') {
+    if (!DIRECT_LINK.test(p.link)) errs.push(`${p.key}: direct link must be https://www.amazon.com/dp/<ASIN>?tag=smartpinsdirect-20\n      got ${p.link}`);
+  } else {
+    errs.push(`${p.key}: kind must be "guide" or "direct" (got "${p.kind}")`);
+  }
 }
 for (const [b, n] of Object.entries(perBoard)) if (n > rules.maxPerBoardPerDay) errs.push(`board "${b}" has ${n} > ${rules.maxPerBoardPerDay}`);
 if (pins.length && direct / pins.length > rules.maxDirectRatio) errs.push(`direct links ${direct}/${pins.length} > ${rules.maxDirectRatio}`);
