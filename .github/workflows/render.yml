@@ -1,7 +1,7 @@
 name: render
 on:
   push:
-    paths: ["pins/*.json", "hero/**", "scripts/render.js"]
+    paths: ["pins/*.json", "hero/**", "scripts/render.js", "config/rules.json", "config/boards.json"]
   workflow_dispatch:
     inputs:
       date:
@@ -18,6 +18,18 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - run: npm install --no-audit --no-fund
+      # Validate the plan against config/rules.json BEFORE composing anything.
+      # check.js exits 1 on any violation, so a bad plan fails the run loudly
+      # instead of being caught later by dispatch.js, which just stops sending
+      # once the daily cap is reached and silently drops the rest.
+      - name: Validate plan
+        run: |
+          DATE="${{ inputs.date }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(ls pins/*.json | sort | tail -1 | xargs basename | sed 's/\.json$//')
+          fi
+          echo "Validating pins/$DATE.json against config/rules.json"
+          node scripts/check.js "pins/$DATE.json"
       - name: Compose pins
         run: node scripts/render.js ${{ inputs.date }}
       - name: Commit outputs
