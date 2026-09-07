@@ -5,5 +5,11 @@
     "board": "Small Kitchen Organization",
     "kind": "guide",
     "note": "First live pipeline test; posted immediately instead of the 22:00 slot."
+  },
+  "2026-09-06-02": {
+    "pinId": "904942118913399457",
+    "postedAt": "2026-09-07T00:01:03.110Z",
+    "board": "Bathroom Storage Ideas",
+    "kind": "guide"
   }
 }
