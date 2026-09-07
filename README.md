@@ -11,5 +11,5 @@ Pin plans, hero photos, composed pin images and posting state for the **Smart Li
 - `state/posted.json` — what was posted, skipped or failed (written by the `dispatch` workflow)
 - `config/rules.json` — account-safety limits enforced by `dispatch.js`; `config/boards.json` — board name → Pinterest board id
 
-Flow: plan commit → `render` composes images → `dispatch` (manual now, scheduled later) sends due pins to a Make webhook → Make creates the pin.
+Flow: plan commit → `render` composes images → `dispatch` (runs every 30 minutes on a schedule since 2026-09-06; can also be run manually with `dry_run`) sends due pins to a Make webhook → Make creates the pin.
 Late pins (> `lateMinutes`) are skipped, never backfilled. The Archive board is not mapped and cannot be posted to.
