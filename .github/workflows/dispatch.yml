@@ -1,6 +1,6 @@
 name: dispatch
 on:
-  # schedule: [{ cron: "*/30 * * * *" }]   # Phase 2: uncomment to go fully automatic
+  schedule: [{ cron: "*/30 * * * *" }]   # enabled 2026-09-06 after end-to-end verification
   workflow_dispatch:
     inputs:
       dry_run:
