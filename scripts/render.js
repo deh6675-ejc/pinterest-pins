@@ -11,6 +11,46 @@ registerFont(path.join(__dirname, '../fonts/Inter-Bold.ttf'), { family: 'Inter',
 
 const W = 1024, H = 1536, PHOTO_TOP = 610;
 
+// --- IPTC Gen-AI provenance -------------------------------------------------
+// The hero photos are generated with Gemini and composited with our own typography,
+// so every pin is "composite with trained algorithmic media" under the IPTC
+// DigitalSourceType vocabulary. Pinterest reads this metadata to apply its Gen AI
+// label; the pin description is NOT where that disclosure belongs.
+const XMP = '<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>'
+  + '<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'
+  + '<rdf:Description rdf:about="" xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/">'
+  + '<Iptc4xmpExt:DigitalSourceType>http://cv.iptc.org/newscodes/digitalsourcetype/compositeWithTrainedAlgorithmicMedia</Iptc4xmpExt:DigitalSourceType>'
+  + '</rdf:Description></rdf:RDF></x:xmpmeta><?xpacket end="w"?>';
+
+const CRC_TABLE = (() => {
+  const t = [];
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t;
+})();
+function crc32(buf) {
+  let c = 0xFFFFFFFF;
+  for (const b of buf) c = CRC_TABLE[(c ^ b) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+
+// Insert the XMP packet as an iTXt chunk. The chunk MUST go before IDAT - placed
+// after it the file is still valid but readers do not pick the metadata up.
+// Nothing is re-encoded, so the pixels are bit-identical and the file grows ~490 bytes.
+function withXmp(png) {
+  if (png.includes(Buffer.from('XML:com.adobe.xmp', 'latin1'))) return png; // already tagged
+  const body = Buffer.concat([
+    Buffer.from('XML:com.adobe.xmp', 'latin1'),
+    Buffer.from([0, 0, 0, 0, 0]), // null separator, compression flag, compression method, empty language, empty translated keyword
+    Buffer.from(XMP, 'utf8'),
+  ]);
+  const type = Buffer.from('iTXt', 'latin1');
+  const len = Buffer.alloc(4); len.writeUInt32BE(body.length);
+  const crc = Buffer.alloc(4); crc.writeUInt32BE(crc32(Buffer.concat([type, body])));
+  const at = 8 + 25; // PNG signature (8) + IHDR chunk (4 length + 4 type + 13 data + 4 crc)
+  return Buffer.concat([png.subarray(0, at), len, type, body, crc, png.subarray(at)]);
+}
+// ---------------------------------------------------------------------------
+
 function latestPlanDate() {
   const files = fs.readdirSync('pins').filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort();
   if (!files.length) throw new Error('no plan files in pins/');
@@ -81,7 +121,7 @@ async function renderPin(pin, heroPath) {
   x.font = '500 27px Inter'; x.fillStyle = 'rgba(255,255,255,0.72)';
   x.fillText(pin.brand || 'Budget Small-Space Living', W / 2, H - 40);
 
-  return c.toBuffer('image/png');
+  return withXmp(c.toBuffer('image/png'));
 }
 
 (async () => {
