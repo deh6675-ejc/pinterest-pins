@@ -1,7 +1,7 @@
 name: render
 on:
   push:
-    paths: ["pins/*.json", "hero/**", "scripts/render.js", "config/rules.json", "config/boards.json"]
+    paths: ["pins/*.json", "hero/**", "scripts/render.js", "scripts/check.js", "config/rules.json", "config/boards.json"]
   workflow_dispatch:
     inputs:
       date:
