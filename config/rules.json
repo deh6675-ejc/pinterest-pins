@@ -1,9 +1,13 @@
 {
+  "_comment": "maxPerDay must be raised in the SAME commit as the plan that uses it. check.js (run by the render workflow since 2026-09-07) fails a plan whose pin count exceeds maxPerDay. dispatch.js does NOT fail: once the rolling 24h count reaches maxPerDay it stops sending, and the pins left over are dropped as 'late' after lateMinutes with no error anywhere. Planned steps: 9 -> 12 on 2026-09-13, review 15 on 2026-09-20.",
   "maxPerDay": 9,
   "hardMaxPerDay": 20,
   "maxPerBoardPerDay": 3,
   "maxDirectRatio": 0.25,
   "lateMinutes": 90,
   "minDistinctLinksPerDay": 8,
-  "forbiddenBoards": ["Archive – Previous Pins", "Archive - Previous Pins"]
+  "forbiddenBoards": [
+    "Archive – Previous Pins",
+    "Archive - Previous Pins"
+  ]
 }
