@@ -149,5 +149,11 @@
     "postedAt": "2026-09-09T18:06:58.035Z",
     "board": "Grocery & Daily Nutrition",
     "kind": "guide"
+  },
+  "2026-09-08-08": {
+    "pinId": "904942118913488761",
+    "postedAt": "2026-09-09T21:05:03.245Z",
+    "board": "Cricut & Vinyl Projects",
+    "kind": "direct"
   }
 }
