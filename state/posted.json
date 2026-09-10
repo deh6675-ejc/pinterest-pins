@@ -173,5 +173,11 @@
     "postedAt": "2026-09-10T06:07:08.379Z",
     "board": "Health & Household Essentials",
     "kind": "guide"
+  },
+  "2026-09-09-03": {
+    "pinId": "904942118913501710",
+    "postedAt": "2026-09-10T08:39:23.548Z",
+    "board": "Resin Art & DIY Crafts",
+    "kind": "guide"
   }
 }
