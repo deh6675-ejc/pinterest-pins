@@ -221,5 +221,10 @@
     "postedAt": "2026-09-12T21:07:49.610Z",
     "board": "Resin Art & DIY Crafts",
     "kind": "guide"
+  },
+  "2026-09-12-02": {
+    "skipped": true,
+    "reason": "late",
+    "at": "2026-09-13T01:15:35.187Z"
   }
 }
