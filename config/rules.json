@@ -1,10 +1,10 @@
 {
-  "_comment": "maxPerDay must be raised in the SAME commit as the plan that uses it. check.js (run by the render workflow since 2026-09-07) fails a plan whose pin count exceeds maxPerDay. dispatch.js does NOT fail: once the rolling 24h count reaches maxPerDay it stops sending, and the pins left over are dropped as 'late' after lateMinutes with no error anywhere. Raised 9 -> 12 on 2026-09-13 in the commit before pins/2026-09-13.json (12 pins, 120-minute slots). Next planned step: review 15 on 2026-09-20.",
+  "_comment": "maxPerDay must be raised in the SAME commit as the plan that uses it. check.js (run by the render workflow since 2026-09-07) fails a plan whose pin count exceeds maxPerDay. dispatch.js does NOT fail: once the rolling 24h count reaches maxPerDay it stops sending, and the pins left over are dropped as 'late' after lateMinutes with no error anywhere. Raised 9 -> 12 on 2026-09-13 in the commit before pins/2026-09-13.json (12 pins, 120-minute slots). Next planned step: review 15 on 2026-09-20. lateMinutes raised 90 -> 360 on 2026-09-14: GitHub Actions degraded the dispatch cron from every ~30 min to every 120-345 min around 2026-09-12, so pins were silently dropped as 'late' (9/12 cycle posted 3 of 9). A pin that posts hours off-slot beats a pin that never posts; the rolling 24h maxPerDay and maxPerBoardPerDay still cap volume. Revisit if the cron recovers or dispatch is triggered externally.",
   "maxPerDay": 12,
   "hardMaxPerDay": 20,
   "maxPerBoardPerDay": 3,
   "maxDirectRatio": 0.25,
-  "lateMinutes": 90,
+  "lateMinutes": 360,
   "minDistinctLinksPerDay": 8,
   "forbiddenBoards": [
     "Archive – Previous Pins",
