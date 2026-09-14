@@ -311,5 +311,11 @@
     "postedAt": "2026-09-14T16:30:37.785Z",
     "board": "Small Kitchen Organization",
     "kind": "direct"
+  },
+  "2026-09-13-09": {
+    "pinId": "904942118913646891",
+    "postedAt": "2026-09-14T18:30:41.567Z",
+    "board": "Renter-Friendly Storage Ideas",
+    "kind": "guide"
   }
 }
