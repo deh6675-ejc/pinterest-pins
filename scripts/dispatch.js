@@ -14,8 +14,16 @@ const HARD_MAX = 20;
 const planFiles = fs.readdirSync('pins').filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().slice(-3);
 const plans = planFiles.map(f => ({ file: f, ...JSON.parse(fs.readFileSync(`pins/${f}`, 'utf8')) }));
 
+// Rolling window for the daily and per-board caps. Deliberately 5 minutes short of 24h.
+// The Make ticker starts dispatch at the same second every hour, and postedAt is stamped
+// ~15-20s after the run starts. So a post made exactly one tick 24h earlier was still inside
+// a full 24h window by a few seconds, the cap looked full, and the next pin waited another
+// hour. With 12 pins x 120 min there is no slack, so that hour carried into every later cycle
+// (2026-09-16: 2026-09-14-01 posted 03:30:37Z blocked 2026-09-15-01 at the 03:30Z tick).
+// Effect on volume: at most maxPerDay posts per 23h55m instead of per 24h.
+const WINDOW_MS = 86400000 - 5 * 60000;
 function postedLast24h() {
-  return Object.values(state).filter(s => s.pinId && now - Date.parse(s.postedAt) < 86400000);
+  return Object.values(state).filter(s => s.pinId && now - Date.parse(s.postedAt) < WINDOW_MS);
 }
 
 async function send(payload) {
