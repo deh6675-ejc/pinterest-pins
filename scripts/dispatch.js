@@ -11,7 +11,11 @@ const now = Date.now();
 const DRY = !!process.env.DRY_RUN;
 const HARD_MAX = 20;
 
-const planFiles = fs.readdirSync('pins').filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().slice(-3);
+// Plan window: the newest 4 plan files. Plans are queued two cycles ahead (2026-09-21), so the window
+// holds the cycle being posted + two queued ones + the finished one before it. A file that falls out of
+// this window is never read again, and its unposted pins vanish without any state entry (v10 §9-14).
+const PLAN_WINDOW = 4;
+const planFiles = fs.readdirSync('pins').filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().slice(-PLAN_WINDOW);
 const plans = planFiles.map(f => ({ file: f, ...JSON.parse(fs.readFileSync(`pins/${f}`, 'utf8')) }));
 
 // Rolling window for the daily and per-board caps. Deliberately 5 minutes short of 24h.
@@ -22,6 +26,17 @@ const plans = planFiles.map(f => ({ file: f, ...JSON.parse(fs.readFileSync(`pins
 // (2026-09-16: 2026-09-14-01 posted 03:30:37Z blocked 2026-09-15-01 at the 03:30Z tick).
 // Effect on volume: at most maxPerDay posts per 23h55m instead of per 24h.
 const WINDOW_MS = 86400000 - 5 * 60000;
+
+// Retry (2026-09-21). A failed send used to be final: one Make/Pinterest hiccup, or Make running out of
+// credits, silently killed every pin that came due while it lasted. Now a failure is retried on later runs,
+// up to MAX_ATTEMPTS in total and only while the pin is within lateMinutes; after that it is 'late' or a
+// final 'failed'. On any failure the run stops sending, so an outage costs one attempt per run, not one
+// attempt per due pin. Entries written before this change have no 'attempts' field and stay final.
+// Duplicate risk: only if Make posted the pin but did not return a pinId.
+const MAX_ATTEMPTS = 3;
+function retryable(s) {
+  return !!s && s.failed === true && typeof s.attempts === 'number' && s.attempts < MAX_ATTEMPTS;
+}
 function postedLast24h() {
   return Object.values(state).filter(s => s.pinId && now - Date.parse(s.postedAt) < WINDOW_MS);
 }
@@ -40,14 +55,22 @@ async function send(payload) {
 
 (async () => {
   let changed = false;
+  let halted = false;
   for (const plan of plans) {
+    if (halted) break;
     for (const [i, p] of plan.pins.entries()) {
-      if (state[p.key]) continue;
+      const prev = state[p.key];
+      if (prev && !retryable(prev)) continue;
       const at = Date.parse(p.at);
       if (Number.isNaN(at)) { state[p.key] = { skipped: true, reason: 'bad date', at: new Date().toISOString() }; changed = true; continue; }
       if (at > now) continue;
       const stamp = new Date().toISOString();
-      if (now - at > rules.lateMinutes * 60000) { state[p.key] = { skipped: true, reason: 'late', at: stamp }; changed = true; continue; }
+      if (now - at > rules.lateMinutes * 60000) {
+        state[p.key] = prev
+          ? { skipped: true, reason: 'late after failed attempts', attempts: prev.attempts, lastError: prev.body, at: stamp }
+          : { skipped: true, reason: 'late', at: stamp };
+        changed = true; continue;
+      }
 
       const recent = postedLast24h();
       if (recent.length >= Math.min(rules.maxPerDay, HARD_MAX)) { console.log('daily cap reached; stopping'); break; }
@@ -63,11 +86,16 @@ async function send(payload) {
       const payload = { key: p.key, boardId: boards[p.board], boardName: p.board, image, title: p.title, description: p.desc, link: p.link, alt: p.alt };
       let res;
       try { res = await send(payload); } catch (e) { res = { ok: false, error: String(e) }; }
+      const attempts = (prev ? prev.attempts : 0) + 1;
       state[p.key] = res.ok
         ? { pinId: res.pinId, postedAt: stamp, board: p.board, kind: p.kind }
-        : { failed: true, status: res.status, body: res.body || res.error, at: stamp, board: p.board, kind: p.kind };
+        : { failed: true, attempts, status: res.status, body: res.body || res.error, at: stamp, board: p.board, kind: p.kind };
       changed = true;
       console.log(p.key, JSON.stringify(state[p.key]));
+      if (!res.ok) {
+        console.log(attempts < MAX_ATTEMPTS ? `send failed (attempt ${attempts}/${MAX_ATTEMPTS}); will retry next run; stopping this run` : `send failed ${attempts} times; giving up on ${p.key}; stopping this run`);
+        halted = true; break;
+      }
     }
   }
   if (changed && !DRY) fs.writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
