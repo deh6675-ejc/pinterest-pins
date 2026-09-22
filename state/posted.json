@@ -725,5 +725,11 @@
     "postedAt": "2026-09-22T09:30:40.801Z",
     "board": "Grocery & Daily Nutrition",
     "kind": "direct"
+  },
+  "2026-09-21-06": {
+    "pinId": "904942118913887679",
+    "postedAt": "2026-09-22T11:30:44.079Z",
+    "board": "Bathroom Storage Ideas",
+    "kind": "guide"
   }
 }
