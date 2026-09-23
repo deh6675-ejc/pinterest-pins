@@ -72,11 +72,62 @@ function outputName(date, index, pin) {
   return `outputs/${date}/${String(index + 1).padStart(2, '0')}-${pin.slug}.png`;
 }
 
+// Layout B ("full", 2026-09-23 experiment). The default layout gives the top 40% of the pin to a
+// cream headline band, so the photo is a strip. The pins that actually earned distribution on this
+// account (2026-08-29 batch, 93% of 30-day impressions) were full-bleed colour with the headline
+// sitting on the art. This renders that shape from the same hero photo: photo covers the whole pin,
+// a navy scrim carries the headline, a gold rule and the bottom ribbon stay for brand continuity.
+// Pins opt in per pin with "layout": "full"; anything else renders the original layout unchanged.
+async function renderFull(pin, img, c, x) {
+  const cropX = typeof pin.cropX === 'number' ? pin.cropX : 0.5;
+  const s = Math.max(W / img.width, H / img.height);
+  const dw = img.width * s, dh = img.height * s;
+  x.drawImage(img, (W - dw) * cropX, (H - dh) * 0.5, dw, dh);
+
+  // top scrim: navy, opaque at the top so white type always clears the photo
+  let g = x.createLinearGradient(0, 0, 0, 860);
+  g.addColorStop(0, 'rgba(26,32,56,0.92)'); g.addColorStop(0.62, 'rgba(26,32,56,0.78)'); g.addColorStop(1, 'rgba(26,32,56,0)');
+  x.fillStyle = g; x.fillRect(0, 0, W, 860);
+
+  let size = 112, lines;
+  x.textAlign = 'center';
+  for (;;) {
+    x.font = `900 ${size}px Montserrat`;
+    lines = wrap(x, pin.head.toUpperCase(), 880);
+    if (lines.length <= 3 || size <= 62) break;
+    size -= 4;
+  }
+  const lh = size * 1.04;
+  let y = 150 + size * 0.82;
+  // last line in coral so the headline reads as designed type, not a caption
+  lines.forEach((ln, i) => {
+    x.fillStyle = (lines.length > 1 && i === lines.length - 1) ? '#F07A4B' : '#FFF8EE';
+    x.fillText(ln, W / 2, y); y += lh;
+  });
+
+  const divY = y - lh + size * 0.30 + 40;
+  x.strokeStyle = '#E8C46A'; x.lineWidth = 3; x.beginPath();
+  x.moveTo(W / 2 - 170, divY); x.lineTo(W / 2 + 170, divY); x.stroke();
+
+  x.font = 'italic 500 42px Inter'; x.fillStyle = 'rgba(255,248,238,0.92)';
+  x.fillText(pin.sub, W / 2, divY + 74);
+
+  // bottom ribbon
+  x.fillStyle = 'rgba(26,32,56,0.94)'; x.fillRect(0, H - 150, W, 150);
+  x.strokeStyle = '#E8C46A'; x.lineWidth = 2; x.beginPath();
+  x.moveTo(0, H - 150); x.lineTo(W, H - 150); x.stroke();
+  x.font = '700 36px Inter'; x.fillStyle = '#FFF8EE'; x.fillText(pin.kicker, W / 2, H - 88);
+  x.font = '500 28px Inter'; x.fillStyle = '#E8C46A';
+  x.fillText((pin.brand || 'Budget Small-Space Living').toUpperCase(), W / 2, H - 42);
+}
+
 async function renderPin(pin, heroPath) {
   const img = await loadImage(await sharp(heroPath).png().toBuffer()); // webp/jpg -> png for node-canvas
   const c = createCanvas(W, H);
   const x = c.getContext('2d');
   x.fillStyle = '#F6F1E8'; x.fillRect(0, 0, W, H);
+
+  if (pin.layout === 'full') { await renderFull(pin, img, c, x); return withXmp(c.toBuffer('image/png')); }
 
   // photo: cover-crop into the lower band
   const ph = H - PHOTO_TOP;
