@@ -1325,5 +1325,11 @@
     "postedAt": "2026-09-30T17:30:52.230Z",
     "board": "Grocery & Daily Nutrition",
     "kind": "guide"
+  },
+  "2026-09-29-10": {
+    "pinId": "904942118914153253",
+    "postedAt": "2026-09-30T19:30:48.140Z",
+    "board": "Renter-Friendly Storage Ideas",
+    "kind": "guide"
   }
 }
