@@ -1373,5 +1373,11 @@
     "postedAt": "2026-10-01T09:30:46.917Z",
     "board": "Small Kitchen Organization",
     "kind": "direct"
+  },
+  "2026-09-30-06": {
+    "pinId": "904942118914170324",
+    "postedAt": "2026-10-01T11:30:46.215Z",
+    "board": "Bathroom Storage Ideas",
+    "kind": "guide"
   }
 }
