@@ -1481,5 +1481,11 @@
     "postedAt": "2026-10-02T21:30:48.949Z",
     "board": "Health & Household Essentials",
     "kind": "direct"
+  },
+  "2026-10-01-12": {
+    "pinId": "904942118914220571",
+    "postedAt": "2026-10-02T23:30:36.312Z",
+    "board": "Acrylic Painting & Miniatures",
+    "kind": "guide"
   }
 }
