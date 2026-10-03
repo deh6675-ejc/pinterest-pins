@@ -1553,5 +1553,11 @@
     "postedAt": "2026-10-03T21:30:35.910Z",
     "board": "Grocery & Daily Nutrition",
     "kind": "direct"
+  },
+  "2026-10-02-12": {
+    "pinId": "904942118914253037",
+    "postedAt": "2026-10-03T23:30:36.378Z",
+    "board": "Acrylic Painting & Miniatures",
+    "kind": "guide"
   }
 }
