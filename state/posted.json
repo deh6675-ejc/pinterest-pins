@@ -1655,5 +1655,11 @@
     "postedAt": "2026-10-05T07:30:44.538Z",
     "board": "Renter-Friendly Storage Ideas",
     "kind": "guide"
+  },
+  "2026-10-04-05": {
+    "pinId": "904942118914295528",
+    "postedAt": "2026-10-05T09:30:41.649Z",
+    "board": "Resin Art & DIY Crafts",
+    "kind": "direct"
   }
 }
