@@ -1727,5 +1727,11 @@
     "postedAt": "2026-10-06T07:30:48.909Z",
     "board": "Resin Art & DIY Crafts",
     "kind": "guide"
+  },
+  "2026-10-05-05": {
+    "pinId": "904942118914325850",
+    "postedAt": "2026-10-06T09:30:43.507Z",
+    "board": "Cricut & Vinyl Projects",
+    "kind": "direct"
   }
 }
