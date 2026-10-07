@@ -1805,5 +1805,11 @@
     "postedAt": "2026-10-07T09:30:45.970Z",
     "board": "Resin Art & DIY Crafts",
     "kind": "direct"
+  },
+  "2026-10-06-06": {
+    "pinId": "904942118914356594",
+    "postedAt": "2026-10-07T11:30:46.021Z",
+    "board": "Home Office Organization",
+    "kind": "guide"
   }
 }
