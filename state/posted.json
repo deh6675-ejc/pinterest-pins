@@ -1829,5 +1829,17 @@
     "postedAt": "2026-10-07T17:30:59.421Z",
     "board": "Health & Household Essentials",
     "kind": "guide"
+  },
+  "2026-10-06-10": {
+    "pinId": "904942118914372195",
+    "postedAt": "2026-10-07T21:30:48.465Z",
+    "board": "Renter-Friendly Storage Ideas",
+    "kind": "guide"
+  },
+  "2026-10-06-11": {
+    "pinId": "904942118914372198",
+    "postedAt": "2026-10-07T21:30:49.958Z",
+    "board": "Grocery & Daily Nutrition",
+    "kind": "direct"
   }
 }
