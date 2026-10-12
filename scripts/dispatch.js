@@ -11,12 +11,12 @@ const now = Date.now();
 const DRY = !!process.env.DRY_RUN;
 const HARD_MAX = 20;
 
-// Plan window: the newest 8 plan files. Plans are queued up to five cycles ahead (2026-10-11, after a
-// five-day planning outage emptied the two-cycle queue), so the window holds the cycle being posted, up to
-// five queued ones and spare room. Raised from 4 (2026-09-21). A file that falls out of this window is never
-// read again, and its unposted pins vanish without any state entry (v10 §9-14). Already-posted keys are
-// skipped, so a wider window only costs a few file reads per tick.
-const PLAN_WINDOW = 8;
+// Plan window: the newest 12 plan files. Plans are queued up to seven cycles ahead (2026-10-12, a week of
+// cover against Claude outages; raised from five cycles / 8 files set on 2026-10-11), so the window holds the
+// cycle being posted, up to seven queued ones, the ones added on a catch-up day and spare room. A file that
+// falls out of this window is never read again, and its unposted pins vanish without any state entry
+// (v10 §9-14). Already-posted keys are skipped, so a wider window only costs a few file reads per tick.
+const PLAN_WINDOW = 12;
 const planFiles = fs.readdirSync('pins').filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().slice(-PLAN_WINDOW);
 const plans = planFiles.map(f => ({ file: f, ...JSON.parse(fs.readFileSync(`pins/${f}`, 'utf8')) }));
 
