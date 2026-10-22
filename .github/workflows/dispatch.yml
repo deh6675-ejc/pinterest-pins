@@ -13,7 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions: { contents: write }
     steps:
+      # ref: main = check out the newest main when the job actually starts (after the
+      # repo-writes queue), not the SHA frozen when the run was created. Without it, two
+      # runs created seconds apart (GitHub cron + Make ticker) both read the same old
+      # state/posted.json and the second one re-posts the same pin (2026-10-20 15:30Z).
       - uses: actions/checkout@v4
+        with: { ref: main }
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - name: Send due pins to Make
