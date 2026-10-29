@@ -52,7 +52,18 @@ for (const p of pins) {
 // Pinterest treats that as the same pin posted over and over, and the account's reach collapsed.
 // From FRESH_FROM on: a template pin needs a photo no other plan has used, an art pin needs art no
 // other plan has used, and a link may appear at most LINK_CAP times in any 30 days.
-const FRESH_FROM = '2026-11-04', LINK_CAP_FROM = '2026-11-15', LINK_CAP = 4;
+// Revised 2026-10-29 (click-improvement, approved): Pinterest counts a new image on the same URL as a
+// fresh pin, so only uses from the fresh-photo era (FRESH_START on) count toward the cap, the cap is 6,
+// and the same link needs MIN_GAP_H hours between slots. Links in PAUSED_SLUGS (30-day data
+// 2026-09-28..10-28: 1-5 impressions per pin, 0 outbound clicks) may not be used by template pins in
+// plans from PAUSED_FROM on; art pins (hand-made gift/infographic pins) are exempt.
+const FRESH_FROM = '2026-11-04', LINK_CAP_FROM = '2026-11-15', LINK_CAP = 6, MIN_GAP_H = 72;
+const FRESH_START = Date.parse('2026-11-04T00:00:00-05:00');
+const PAUSED_FROM = '2026-11-05';
+const PAUSED_SLUGS = new Set(['small-home-office-organization', 'small-bathroom-storage-no-drilling',
+  'small-kitchen-organization-budget', 'small-kitchen-storage-bin-size-guide',
+  'under-sink-organization-small-kitchen', 'under-sink-organizer-size-guide']);
+const PAUSED_SITES = new Set(['routine']);
 const planDate = (plan.date || require('path').basename(file, '.json'));
 const warns = [];
 const pngs = new Set();
@@ -74,8 +85,13 @@ if (planDate >= FRESH_FROM) {
     if (p.art) { if (usedArt.has(p.art)) errs.push(`${p.key}: art ${p.art} was already used by another plan`); }
     else if (usedPhoto.has(`${p.site}/${p.hero || p.slug}`)) errs.push(`${p.key}: photo ${p.site}/${p.hero || p.slug} was already used by another plan — make a new one`);
     const t = Date.parse(p.at), from = t - 30 * 86400000;
-    const n = others.concat(pins.slice(0, i)).filter(o => bare(o.link) === bare(p.link) && Date.parse(o.at) >= from && Date.parse(o.at) < t).length;
-    if (n >= LINK_CAP) (planDate >= LINK_CAP_FROM ? errs : warns).push(`${p.key}: link already used ${n} times in the 30 days before this slot (cap ${LINK_CAP})`);
+    const same = others.concat(pins.slice(0, i)).filter(o => bare(o.link) === bare(p.link) && Date.parse(o.at) >= Math.max(from, FRESH_START) && Date.parse(o.at) < t);
+    const n = same.length;
+    if (n >= LINK_CAP) (planDate >= LINK_CAP_FROM ? errs : warns).push(`${p.key}: link already used ${n} times in the 30 days before this slot (cap ${LINK_CAP}, fresh-photo era only)`);
+    const near = others.concat(pins).filter(o => o !== p && bare(o.link) === bare(p.link) && Date.parse(o.at) >= FRESH_START && Math.abs(Date.parse(o.at) - t) < MIN_GAP_H * 3600000);
+    if (near.length) (planDate >= LINK_CAP_FROM ? errs : warns).push(`${p.key}: same link within ${MIN_GAP_H}h of ${near.map(o => o.key).join(', ')}`);
+    if (!p.art && planDate >= PAUSED_FROM && p.kind === 'guide' && (PAUSED_SITES.has(p.site) || PAUSED_SLUGS.has(p.slug)))
+      errs.push(`${p.key}: ${p.site}/${p.slug} is paused for template pins (no reach in 30-day data) — pick a craft or strong budget guide`);
   }
   const photos = pins.filter(p => !p.art).map(p => `${p.site}/${p.hero || p.slug}`);
   if (new Set(photos).size !== photos.length) errs.push('the same photo appears twice in this plan');
