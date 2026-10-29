@@ -2,24 +2,6 @@
   "date": "2026-11-01",
   "pins": [
     {
-      "key": "2026-11-01-01",
-      "at": "2026-11-01T16:30:00-05:00",
-      "site": "budget",
-      "slug": "organize-a-small-apartment-on-a-budget",
-      "kind": "guide",
-      "link": "https://budget-small-space-living.daniel-han-5569.chatgpt.site/guides/organize-a-small-apartment-on-a-budget",
-      "board": "Small Apartment Organization",
-      "head": "THE OTTOMAN OPENS UP",
-      "sub": "Furniture That Stores Something",
-      "kicker": "See the budget picks",
-      "brand": "Budget Small-Space Living",
-      "title": "Small Apartment on a Budget: Choose Furniture That Stores Something",
-      "desc": "In a small apartment every piece should do two jobs. A lidded ottoman is a footrest and a box for blankets, and fabric bins turn an open console into closed storage you can actually look at. None of it costs more than the plain version of the same furniture. Contains affiliate links. #SmallApartment #BudgetDecor #StorageIdeas",
-      "alt": "A white media console holding a television, books and terracotta and teal fabric bins, with a cream lidded storage ottoman in front and a sofa with a throw beside it.",
-      "cropX": 0.45,
-      "layout": "full"
-    },
-    {
       "key": "2026-11-01-02",
       "at": "2026-11-01T18:30:00-05:00",
       "site": "routine",
@@ -34,24 +16,8 @@
       "title": "Acne Patches: Thin, Clear Edges Are What Make One Wearable in Daylight",
       "desc": "A patch that works overnight is not always one you would wear to work. The edge is what shows, so look for a thin, tapered rim and a matte or clear finish, and keep the thicker overnight ones for the hours when nobody is looking. Contains affiliate links. #AcnePatches #SkincareBasics #PersonalCare",
       "alt": "A sheet of small round hydrocolloid patches lying on a white bathroom counter beside a shallow ceramic dish, with folded towels on the windowsill behind.",
-      "cropX": 0.65
-    },
-    {
-      "key": "2026-11-01-03",
-      "at": "2026-11-01T20:30:00-05:00",
-      "site": "budget",
-      "slug": "small-bathroom-storage-no-drilling",
-      "kind": "guide",
-      "link": "https://budget-small-space-living.daniel-han-5569.chatgpt.site/guides/small-bathroom-storage-no-drilling",
-      "board": "Bathroom Storage Ideas",
-      "head": "THE CADDY HANGS ITSELF",
-      "sub": "Shower Storage With No Fixings",
-      "kicker": "See the shower fix",
-      "brand": "Budget Small-Space Living",
-      "title": "Shower Storage Without Drilling: A Caddy That Hangs or Tensions in Place",
-      "desc": "Adhesive hooks give up in steam and suction cups drop their load at the worst moment. A caddy that hangs from the shower arm or tensions into a corner carries the same bottles with nothing stuck to the tile, and it comes down to be rinsed. Contains affiliate links. #ShowerStorage #BathroomIdeas #RentalHome",
-      "alt": "A white wire caddy holding bottles and a sponge inside a glass shower enclosure, with a teal towel on the shower door and a shelf unit of baskets and rolled towels over the toilet.",
-      "cropX": 0.88
+      "cropX": 0.65,
+      "png": "02-acne-patch-buying-guide.png"
     },
     {
       "key": "2026-11-01-04",
@@ -69,7 +35,8 @@
       "desc": "Two people cutting the same decal from the same roll can get very different counts. Lay the shapes out so they interlock and sit close to the edge before you send the cut, and the offcuts shrink from wide strips to slivers you would have thrown away anyway. Contains affiliate links. #VinylCrafts #CricutMade #CraftingTips",
       "alt": "A roll of pale adhesive vinyl partly unrolled across a gridded cutting mat beside a long metal ruler and a sheet of pale green vinyl.",
       "cropX": 0.55,
-      "layout": "full"
+      "layout": "full",
+      "png": "04-adhesive-vinyl-roll-yield-calculator.png"
     },
     {
       "key": "2026-11-01-05",
@@ -86,24 +53,8 @@
       "title": "Clear Craft Glue With a Two-Way Applicator for Paper and Fine Work",
       "desc": "Hot glue is fast and leaves a bead you can see, which is wrong for paper, photos and anything thin. A clear glue that dries invisible handles those, and a two-way tip gives a fine line for edges or a broad spread for a whole sheet without changing bottles. Contains affiliate links. #CraftSupplies #PaperCrafts #CraftGlue",
       "alt": "A hot glue gun resting on a wooden stand beside a white squeeze bottle of clear craft glue and a small terracotta pot on a wooden workbench, with jars on a shelf behind.",
-      "cropX": 0.55
-    },
-    {
-      "key": "2026-11-01-06",
-      "at": "2026-11-02T02:30:00-05:00",
-      "site": "budget",
-      "slug": "small-home-office-organization",
-      "kind": "guide",
-      "link": "https://budget-small-space-living.daniel-han-5569.chatgpt.site/guides/small-home-office-organization",
-      "board": "Home Office Organization",
-      "head": "ONE TRAY FOR THE SMALL THINGS",
-      "sub": "Corralling Pens, Clips and Keys",
-      "kicker": "See the desk reset",
-      "brand": "Budget Small-Space Living",
-      "title": "Small Desk Reset: One Shallow Tray Instead of Clutter Across the Surface",
-      "desc": "Pens, clips and a charger left loose spread until they own the desk. A single shallow tray gives them one address, which makes the rest of the surface easy to wipe and easy to leave empty at the end of the day. Anything that will not fit the tray needs a drawer. Contains affiliate links. #DeskOrganization #HomeOffice #WorkFromHome",
-      "alt": "A wooden desk by a window with a wooden desk organizer holding pens, a laptop on a riser, a white upright file sorter and a woven basket under the desk.",
-      "cropX": 0.72
+      "cropX": 0.55,
+      "png": "05-hot-glue-and-craft-adhesive-guide.png"
     },
     {
       "key": "2026-11-01-07",
@@ -120,24 +71,8 @@
       "title": "Brush Care: A One-Minute Rinse and Reset Saves the Bristles",
       "desc": "Acrylic that dries in the ferrule is what ruins a brush, not painting with it. Rinse while the paint is still wet, blot the water out on a cloth, then stand the brushes bristles-up in a holder so nothing presses on the hairs. That is the whole routine and it takes a minute. Contains affiliate links. #PaintBrushCare #AcrylicPainting #StudioHabits",
       "alt": "Paint brushes standing bristles-up in a slotted wooden holder beside a glass water jar and a folded cloth on a bright workbench, with jars on a shelf behind.",
-      "cropX": 0.25
-    },
-    {
-      "key": "2026-11-01-08",
-      "at": "2026-11-02T06:30:00-05:00",
-      "site": "budget",
-      "slug": "tiny-closet-organization-renters",
-      "kind": "guide",
-      "link": "https://budget-small-space-living.daniel-han-5569.chatgpt.site/guides/tiny-closet-organization-renters",
-      "board": "Small Bedroom & Closet Organization",
-      "head": "THE FLOOR IS THE LAST SHELF",
-      "sub": "Using the Closet Floor Properly",
-      "kicker": "See the closet plan",
-      "brand": "Budget Small-Space Living",
-      "title": "Tiny Closet: The Floor Is Storage, Once Something Keeps It Tidy",
-      "desc": "The strip of floor under hanging clothes usually turns into a pile. Clear stackable boxes make it a shelf instead, with the pair you want visible from the front, and they keep the hems of whatever hangs above them from brushing the ground. Contains affiliate links. #ClosetOrganization #ShoeStorage #RenterHacks",
-      "alt": "A small closet with a two-tier hanging rod holding shirts and trousers, a hanging shelf with folded sweaters, baskets on the top shelf and clear stackable shoe boxes on the floor.",
-      "cropX": 0.2
+      "cropX": 0.25,
+      "png": "07-paint-brush-care-and-station-reset.png"
     },
     {
       "key": "2026-11-01-09",
@@ -155,41 +90,8 @@
       "desc": "A pod is one dose whether the load is full or half, which is convenient and why it costs more per wash. Powder lets you scoop to the size of the load, so the small loads cost less. Pick the format by how often you run a half load, not by what is on offer. Contains affiliate links. #LaundryTips #HouseholdEssentials #CleaningRoutine",
       "alt": "A glass jar with a cork lid filled with laundry pods standing on a wooden counter beside a kraft box with a scoop resting in it and a stack of folded towels.",
       "cropX": 0.75,
-      "layout": "full"
-    },
-    {
-      "key": "2026-11-01-10",
-      "at": "2026-11-02T10:30:00-05:00",
-      "site": "budget",
-      "slug": "renter-friendly-storage-ideas-no-drilling",
-      "kind": "guide",
-      "link": "https://budget-small-space-living.daniel-han-5569.chatgpt.site/guides/renter-friendly-storage-ideas-no-drilling",
-      "board": "Renter-Friendly Storage Ideas",
-      "head": "HEIGHT WITHOUT A BRACKET",
-      "sub": "Leaning Shelves and Door Pockets",
-      "kicker": "See the renter fixes",
-      "brand": "Budget Small-Space Living",
-      "title": "Renter Storage: Gaining Height With Nothing Screwed Into the Wall",
-      "desc": "Wall storage is the thing a lease usually rules out. A leaning shelf takes books and plants up the wall while standing on the floor, and a pocket organizer on the back of a door holds the small things. Neither needs a bracket, and both leave with you. Contains affiliate links. #RenterFriendly #NoDrillStorage #SmallSpaceHacks",
-      "alt": "A leaning wooden shelf holding books and plants beside a sofa with teal cushions and an ottoman, with a pocket organizer hanging on the door at the right.",
-      "cropX": 0.2
-    },
-    {
-      "key": "2026-11-01-11",
-      "at": "2026-11-02T12:30:00-05:00",
-      "site": "routine",
-      "slug": "protein-powder-buying-guide",
-      "kind": "direct",
-      "link": "https://www.amazon.com/dp/B0H6R8WXMD?tag=smartpinsdirect-20",
-      "board": "Grocery & Daily Nutrition",
-      "head": "ZERO CARB, ZERO FLAVOR",
-      "sub": "Unflavored Whey Isolate, 1 lb",
-      "kicker": "Shop the 1 lb tub",
-      "brand": "Smart Routine Refills",
-      "title": "Unflavored Whey Isolate Protein Powder in a 1 lb Starter Tub",
-      "desc": "Flavored powder decides what you can put it in. An unflavored isolate goes into coffee, oats or a plain shaker without turning the whole thing into dessert, and a one pound tub is small enough to finish before you find out you dislike it. Contains affiliate links. #ProteinPowder #WheyIsolate #NutritionBasics",
-      "alt": "A large cream tub of protein powder with a scoop resting on top, beside a shaker bottle with a grey lid, its own lid and a folded towel on a pale kitchen counter.",
-      "cropX": 0.55
+      "layout": "full",
+      "png": "09-laundry-detergent-format-guide.png"
     },
     {
       "key": "2026-11-01-12",
@@ -207,7 +109,8 @@
       "desc": "A bin measured to the exact inside width goes in once and then scrapes every time. Take a little off each dimension so there is room for your fingers at the sides, and check the height against the shelf above rather than the shelf it stands on. Contains affiliate links. #PantryOrganization #KitchenStorage #StorageBins",
       "alt": "Clear stackable storage bins holding utensils and packets inside a wooden kitchen cabinet, with a yellow tape measure lying on the shelf in front of them.",
       "cropX": 0.65,
-      "layout": "full"
+      "layout": "full",
+      "png": "12-small-kitchen-storage-bin-size-guide.png"
     }
   ]
 }
