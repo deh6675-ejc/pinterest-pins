@@ -84,7 +84,8 @@ async function send(payload) {
       }
       if (!/Contains affiliate links\./.test(p.desc)) { state[p.key] = { skipped: true, reason: 'missing disclosure', at: stamp }; changed = true; continue; }
 
-      const image = `${RAW}outputs/${plan.date}/${String(i + 1).padStart(2, '0')}-${p.slug}.png`;
+      // p.png pins the file name (see render.js outputName); otherwise it is derived from the position.
+      const image = `${RAW}outputs/${plan.date}/${p.png || `${String(i + 1).padStart(2, '0')}-${p.slug}.png`}`;
       const payload = { key: p.key, boardId: boards[p.board], boardName: p.board, image, title: p.title, description: p.desc, link: p.link, alt: p.alt };
       let res;
       try { res = await send(payload); } catch (e) { res = { ok: false, error: String(e) }; }

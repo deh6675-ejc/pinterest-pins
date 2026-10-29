@@ -47,6 +47,40 @@ for (const p of pins) {
     errs.push(`${p.key}: kind must be "guide" or "direct" (got "${p.kind}")`);
   }
 }
+// --- Freshness (growth plan A, approved 2026-10-28) ---------------------------------------------
+// By 2026-10-28, 426 guide pins had gone out on only 36 photos and 36 links (one photo+link 39 times).
+// Pinterest treats that as the same pin posted over and over, and the account's reach collapsed.
+// From FRESH_FROM on: a template pin needs a photo no other plan has used, an art pin needs art no
+// other plan has used, and a link may appear at most LINK_CAP times in any 30 days.
+const FRESH_FROM = '2026-11-04', LINK_CAP_FROM = '2026-11-15', LINK_CAP = 4;
+const planDate = (plan.date || require('path').basename(file, '.json'));
+const warns = [];
+const pngs = new Set();
+for (const p of pins) {
+  if (p.png) {
+    if (!/^\d\d-[a-z0-9-]+\.png$/.test(p.png)) errs.push(`${p.key}: png must look like 07-some-slug.png`);
+    if (pngs.has(p.png)) errs.push(`${p.key}: png ${p.png} used twice in this plan`); pngs.add(p.png);
+  }
+  if (p.art && !fs.existsSync(`art/${p.art}`)) errs.push(`${p.key}: art/${p.art} not found`);
+  if (!p.art && !fs.existsSync(`hero/${p.site}/${p.hero || p.slug}.webp`)) errs.push(`${p.key}: hero/${p.site}/${p.hero || p.slug}.webp not found`);
+}
+if (planDate >= FRESH_FROM) {
+  const others = fs.readdirSync('pins').filter(f => /^\d{4}-\d\d-\d\d\.json$/.test(f) && f !== require('path').basename(file))
+    .flatMap(f => (JSON.parse(fs.readFileSync(`pins/${f}`, 'utf8')).pins || []));
+  const usedPhoto = new Set(others.filter(o => !o.art).map(o => `${o.site}/${o.hero || o.slug}`));
+  const usedArt = new Set(others.filter(o => o.art).map(o => o.art));
+  const bare = l => l.split('?')[0];
+  for (const [i, p] of pins.entries()) {
+    if (p.art) { if (usedArt.has(p.art)) errs.push(`${p.key}: art ${p.art} was already used by another plan`); }
+    else if (usedPhoto.has(`${p.site}/${p.hero || p.slug}`)) errs.push(`${p.key}: photo ${p.site}/${p.hero || p.slug} was already used by another plan — make a new one`);
+    const t = Date.parse(p.at), from = t - 30 * 86400000;
+    const n = others.concat(pins.slice(0, i)).filter(o => bare(o.link) === bare(p.link) && Date.parse(o.at) >= from && Date.parse(o.at) < t).length;
+    if (n >= LINK_CAP) (planDate >= LINK_CAP_FROM ? errs : warns).push(`${p.key}: link already used ${n} times in the 30 days before this slot (cap ${LINK_CAP})`);
+  }
+  const photos = pins.filter(p => !p.art).map(p => `${p.site}/${p.hero || p.slug}`);
+  if (new Set(photos).size !== photos.length) errs.push('the same photo appears twice in this plan');
+}
+if (warns.length) console.warn('WARN:\n  ' + warns.join('\n  '));
 for (const [b, n] of Object.entries(perBoard)) if (n > rules.maxPerBoardPerDay) errs.push(`board "${b}" has ${n} > ${rules.maxPerBoardPerDay}`);
 if (pins.length && direct / pins.length > rules.maxDirectRatio) errs.push(`direct links ${direct}/${pins.length} > ${rules.maxDirectRatio}`);
 if (links.size < Math.min(rules.minDistinctLinksPerDay, pins.length)) errs.push(`only ${links.size} distinct links`);

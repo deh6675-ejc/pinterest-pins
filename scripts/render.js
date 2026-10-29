@@ -68,8 +68,11 @@ function wrap(ctx, text, max) {
   return lines;
 }
 
+// pin.png pins the file name. Without it the name comes from the pin's position in the plan, so
+// removing a pin from an already-rendered plan would shift every later pin onto another pin's image
+// (2026-10-28). dispatch.js uses the same rule. Keep the two in sync.
 function outputName(date, index, pin) {
-  return `outputs/${date}/${String(index + 1).padStart(2, '0')}-${pin.slug}.png`;
+  return `outputs/${date}/${pin.png || `${String(index + 1).padStart(2, '0')}-${pin.slug}.png`}`;
 }
 
 // Layout B ("full", 2026-09-23 experiment). The default layout gives the top 40% of the pin to a
@@ -183,6 +186,13 @@ async function renderPin(pin, heroPath) {
   for (const [i, pin] of plan.pins.entries()) {
     const out = outputName(date, i, pin);
     if (fs.existsSync(out)) continue;
+    if (pin.art) {
+      // A finished image (infographic, gift list) made outside the template: resize to the pin size, no text added.
+      const art = `art/${pin.art}`;
+      if (!fs.existsSync(art)) { missing.push(art); continue; }
+      fs.writeFileSync(out, withXmp(await sharp(art).resize(W, H, { fit: 'contain', background: '#FAF6EF' }).png().toBuffer()));
+      made++; console.log('copied art', out); continue;
+    }
     const hero = `hero/${pin.site}/${pin.hero || pin.slug}.webp`;
     if (!fs.existsSync(hero)) { missing.push(hero); continue; }
     fs.writeFileSync(out, await renderPin(pin, hero));
