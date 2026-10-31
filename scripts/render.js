@@ -9,7 +9,13 @@ registerFont(path.join(__dirname, '../fonts/Montserrat-Black.ttf'), { family: 'M
 registerFont(path.join(__dirname, '../fonts/Inter-Medium.ttf'), { family: 'Inter', weight: '500' });
 registerFont(path.join(__dirname, '../fonts/Inter-Bold.ttf'), { family: 'Inter', weight: '700' });
 
-const W = 1024, H = 1536, PHOTO_TOP = 610;
+// Pin size. Default 1024x1536 (2:3). "size": "tall" renders 1000x1778 (9:16) - benchmark 2026-10-29:
+// 56% of the top search pins in our topics were 9:16, and the fastest-growing small accounts post 9:16 only.
+// Both layouts (default and "full") work at either size; the loop sets these per pin before rendering.
+const SIZES = { std: [1024, 1536, 610], tall: [1000, 1778, 700] };
+let W, H, PHOTO_TOP;
+function setSize(pin) { [W, H, PHOTO_TOP] = SIZES[pin.size === 'tall' ? 'tall' : 'std']; }
+setSize({});
 
 // --- IPTC Gen-AI provenance -------------------------------------------------
 // The hero photos are generated with Gemini and composited with our own typography,
@@ -186,6 +192,7 @@ async function renderPin(pin, heroPath) {
   for (const [i, pin] of plan.pins.entries()) {
     const out = outputName(date, i, pin);
     if (fs.existsSync(out)) continue;
+    setSize(pin);
     if (pin.art) {
       // A finished image (infographic, gift list) made outside the template: resize to the pin size, no text added.
       const art = `art/${pin.art}`;

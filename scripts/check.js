@@ -72,6 +72,7 @@ for (const p of pins) {
     if (!/^\d\d-[a-z0-9-]+\.png$/.test(p.png)) errs.push(`${p.key}: png must look like 07-some-slug.png`);
     if (pngs.has(p.png)) errs.push(`${p.key}: png ${p.png} used twice in this plan`); pngs.add(p.png);
   }
+  if (p.size !== undefined && p.size !== 'tall') errs.push(`${p.key}: size must be "tall" or omitted`);
   if (p.art && !fs.existsSync(`art/${p.art}`)) errs.push(`${p.key}: art/${p.art} not found`);
   if (!p.art && !fs.existsSync(`hero/${p.site}/${p.hero || p.slug}.webp`)) errs.push(`${p.key}: hero/${p.site}/${p.hero || p.slug}.webp not found`);
 }
